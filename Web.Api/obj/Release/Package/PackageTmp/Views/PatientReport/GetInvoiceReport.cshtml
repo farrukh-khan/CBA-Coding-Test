@@ -1,0 +1,259 @@
+﻿@model Web.Api.Models.Order.TestResultReport
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+<style>
+    .reportHeaderBox {
+        border-style: groove;
+        border-width: 1px;
+        background-color: transparent;
+        padding: 5px;
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+</style>
+<link href="~/Content/testResultReport.css" rel="stylesheet" />
+<div id="controllerElement" ng-controller="testResultController" ng-init="init(@Html.Raw(ViewBag.invoiceId))">
+
+    @*<div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+            </div>
+        </div>*@
+
+    <div class="well bg-gray-lighter">
+        <div class="panel panel-default" style="margin-bottom: 0;">
+
+            <div class="panel-body">
+
+                <div ng-if="activeView=='scanner'">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 pull-left">
+                            <img src="/Images/logo.jpg" class="pull-left" style="width:50px; width:50px;" />
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-10 col-xs-10">
+                            <div class="text-center">
+                                <h1 style="font-weight:700; font-size:50px;">PPHI LAB</h1>
+                                <label style="font-weight:600; font-size:40px;">
+                                    Diagnostic Laboratory
+                                </label><hr />
+                                <label style="font-weight:600; font-size:30px;">
+                                    Scan qr to view report
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="text-center" id="scanner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="activeView=='invoiceList'">
+                    <scrollable class="sectionScrollContainer">
+                        <div class="testResultAccordion accordionLevel1">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        Name: <strong>{{patient.patientName}} {{patient.relationship}}  {{patient.fatherName}}</strong>
+                                        <br />
+                                        Gender:  <strong>{{patient.gender}}/ {{patient.age}} {{patient.ageType}}</strong>
+                                        <br />
+                                        Lab No:  <strong>{{patient.labNo}}</strong>
+                                        <br />
+                                        Sample Date:   <strong>{{patient.invoiceCreatedDate| date:"MM/dd/yyyy 'at' h:mm a"}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="list-group">
+                                <a class="list-group-item" ng-repeat="test in patient.products" ng-class="{'active':selectedId==test.testResultId}" ng-click="printReport(test)" style="cursor:pointer;">
+                                    {{test.testName}}
+                                </a>
+                            </div>
+
+                            @*<accordion close-others="true">
+                                <accordion-group ng-repeat="section in patient.sections" is-open="section.isOpen" ng-class="{'panel-primary':section.isOpen}">
+                                    <accordion-heading>
+                                        <span ng-class="{'text-info':section.isOpen && patient.isOpen}">{{ section.sectionName}}</span>
+                                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': section.isOpen, 'glyphicon-chevron-right': !section.isOpen}"></i>
+                                    </accordion-heading>
+                                    <div class="list-group">
+                                        <div class="row" ng-repeat="data in section.products">
+                                            <div class="col-sm-12 pr-sm">
+                                                <a ng-disabled="data.testResultId<=0" class="list-group-item list-group-item-action"
+                                                   style="cursor:pointer;"
+                                                   ng-click="printReport(data)"
+                                                   ng-class="{
+                                                            'disabled':(data.testResultId<=0),
+                                                            'hovered':(data.testResultId>0)
+                                                            }">
+                                                    <span>{{data.testName}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </accordion-group>
+                            </accordion>*@
+                        </div>
+                    </scrollable>
+                </div>
+
+                <div ng-if="activeView=='report'">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+
+                                Name: <strong>{{patient.patientName}} {{patient.relationship}}  {{patient.fatherName}}</strong>
+                                <br />
+                                Gender:  <strong>{{patient.gender}}/ {{patient.age}} {{patient.ageType}}</strong>
+                                <br />
+                                Lab No:  <strong>{{patient.labNo}}</strong>
+                                <br />
+                                Sample Date:   <strong>{{patient.invoiceCreatedDate| date:"MM/dd/yyyy 'at' h:mm a"}}</strong>
+
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="row" ng-repeat="(resIndex, result) in testResultToPrint">
+                        <div class="col-sm-12">
+
+                            <h5>{{result.testName}}</h5>
+                            <div class="ml-lg" ng-repeat="product in result.products">
+                                <div class="clearfix"></div>
+                                <h6 class="text-info" ng-if="result.isGroup && product.details.length>0">[{{product.childTestName}}]</h6>
+
+                                <div ng-if="product.details.length>0">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-report" style="width:95%; margin-left:20px;margin-right:20px;">
+                                            <thead ng-if="resIndex==0">
+                                                <tr>
+                                                    <th>Test Name</th>
+                                                    <th>Test Result</th>
+                                                    <th>Previous Result</th>
+                                                    <th ng-if="result.showRangeColumn==true">Normal Range</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="detail in product.details | orderBy :'priority'">
+                                                    <!-- range columns start -->
+                                                    <td style="width:40%;" ng-if="detail.resultType=='range'">{{detail.parameterName}}</td>
+                                                    <td style="width:20%;" ng-if="detail.resultType=='range'"><span>{{detail.lis}}</span> <span>{{detail.readingUnit}}</span></td>
+                                                    <td style="width:20%;" ng-if="detail.resultType=='range'"><span>{{detail.previousLis}}</span> <span ng-if="detail.previousLis!=''">{{detail.readingUnit}}</span></td>
+                                                    <td style="width:40%;" ng-if="detail.resultType=='range'">{{detail.normalRange}}</td>
+                                                    <!-- range columns end -->
+                                                    <!-- property columns start -->
+                                                    <td style="width:40%;" ng-if="detail.resultType!='range'">{{detail.name}}</td>
+                                                    <td style="width:30%;" ng-if="detail.resultType!='range'">{{detail.selectedValue.propertyValue}} {{detail.reading}}</td>
+                                                    <td style="width:30%;" ng-if="detail.resultType!='range'">{{detail.previousSelectedValue.propertyValue}} {{detail.previousReading}}</td>
+
+                                                    <td ng-if="(result.showRangeColumn==true && detail.resultType!='range')"></td>
+                                                    <td ng-if="(result.showRangeColumn==true && detail.resultType!='range')"></td>
+                                                    <!-- property columns end -->
+
+                                                </tr>
+                                                <!--<tr ng-if="detail.parameterRemarks">
+                                                    <td colspan="3">
+                                                        <samp class="" ng-bind-html="detail.parameterRemarks"></samp>
+                                                    </td>
+                                                </tr>-->
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!--<div class="row">
+                            <div class="col-sm-12" ng-repeat="item in interpretations">
+                                <div class="col-sm-12 mt-lg">
+                                        <h6 class="text-muted">{{item.parameterName}}</h6>
+                                        <div ng-bind-html="item.interpretation"></div>
+                                </div>
+                            </div>
+                        </div>-->
+
+                        <div class="row" ng-if="result.interpretation.length>0">
+                            <div class="col-sm-12">
+                                <div class="mt-lg">
+                                    iv
+                                    <label class="col-sm-12 control-label text-sm">Interpretation</label>
+                                    <div class="col-sm-12">
+                                        <p class="ml-lg" ng-bind-html="result.interpretation"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-if="resIndex==testResultToPrint.length-1">
+                            <div class="col-sm-12">
+                                <div class="form-group mt-lg">
+                                    <label class="col-sm-12 control-label text-sm">Remarks</label>
+                                    <div class="col-sm-12">
+                                        <p ng-bind-html="result.remarks"></p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            @*<div class="col-sm-8">
+                                    <p style="font-size:10px; padding-left:10px;">Printed By: {{PrintedBy}} <br /> Printed Date: {{PrintedDate | date:"dd-MM-yyyy  h:mma"}}</p>
+                                </div>*@
+                        </div>
+                    </div>
+
+
+                    @*<div class="row pad-top-botm">
+                            <div class="col-lg-12 col-md-12 col-sm-12 text-center text-sm">
+                                <hr />
+                                <small>  {{userSubCompany.address }} </small>
+                                <br />
+                                <small> Tel:{{userSubCompany.contact }} Email:{{userSubCompany.email }}</small>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+            <div class="panel-footer" ng-if="activeView!='scanner'">
+                <button class="btn btn-info btn-block btn-lg" ng-click="goBack()"><i class="glyphicon glyphicon-circle-arrow-left pull-left"></i>Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var jbScanner = null;
+    function onQRCodeScanned(scannedText) {
+        jbScanner.stopScanning();
+        angular.element(document.getElementById('controllerElement')).scope().codeScanned(scannedText);
+    }
+    //window.setTimeout(function () {
+    //    onQRCodeScanned('inv:2659');
+    //}, 1000);
+
+    //this function will be called when JsQRScanner is ready to use
+    function JsQRScannerReady() {
+        //create a new scanner passing to it a callback function that will be invoked when
+        //the scanner succesfully scan a QR code
+        jbScanner = new JsQRScanner(onQRCodeScanned);
+        //reduce the size of analyzed image to increase performance on mobile devices
+        jbScanner.setSnapImageMaxSize(300);
+        if (document.getElementById("scanner")) {
+            document.getElementById("scanner").innerHTML = ''
+        }
+        var scannerParentElement = document.getElementById("scanner");
+        if (scannerParentElement) {
+            //append the jbScanner to an existing DOM element
+            jbScanner.appendTo(scannerParentElement);
+        }
+    }
+
+</script>

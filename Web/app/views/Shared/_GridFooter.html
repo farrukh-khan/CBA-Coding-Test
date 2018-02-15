@@ -1,0 +1,36 @@
+<div class="col-md-12">
+    <h4>
+        {{system.alertMsg}}
+
+    </h4>
+</div>
+
+<div class="col-md-12" id="pagingDiv">
+    <div paging 
+          disabled="{{disablePageAction}}"
+         page="search.page"
+         page-size="search.pageSize"
+         total="(search.totalPage)"
+         paging-action="pagingAction(page)" class="pull-left">
+    </div>
+
+    <div class="pull-right">
+
+        <select class="form-control" ng-model="search.pageSize" ng-change="pagingAction(1)" ng-disabled="disablePageAction">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+        </select>
+    </div>
+</div>
+
+<div class="col-md-12">
+
+
+    <div ng-if="system.alertMsg == ''">
+        {{system.startRowNumber}} - {{system.endRowNumber}} Out Of {{system.total}} Rows
+    </div>
+
+</div>

@@ -1,0 +1,32 @@
+﻿<html>
+<head>
+    <link href="~/Scripts/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    @*<link href="~/Scripts/custom/e-report.css" rel="stylesheet" />*@
+
+    <style>
+        .qrPreviewVideo {
+            width: 85%;
+        }
+    </style>
+</head>
+<body class="container-fluid" ng-app="naut">
+    <div class="loading style-2" ng-if="isLoading"><div class="loading-wheel"></div></div>
+    @RenderBody()
+
+    <script src="~/Scripts/jquery/dist/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-tmpl/jquery.tmpl.min.js"></script>
+    <script src="~/Scripts/qr-scanner/js/jsqrscanner.nocache.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+
+    <script src="~/Scripts/angular/angular.min.js"></script>
+    <script src="~/Scripts/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/app/app.js"></script>
+    <script src="~/Scripts/app/app.constant.js"></script>
+    <script src="~/Scripts/app/services/shared.service.js"></script>
+    <script src="~/Scripts/app/controllers/testResult.controller.js"></script>
+
+</body>
+</html>
+

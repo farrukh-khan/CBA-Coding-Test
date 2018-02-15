@@ -1,0 +1,84 @@
+
+<div id="tbHeader">
+    <div class="btn-group pull-right" style="margin-right:15px;">
+
+
+        <button class="btn btn-default  ember-view popovercontainer" data-original-title="New" title="New" ng-click="new()">
+            <i class="fa fa-plus-square"></i>
+        </button>
+        <button class="btn btn-default ember-view popovercontainer" data-original-title="Excel" title="Excel" onclick="tableToExcel('tbl', 'Movies Album')">
+            <i class="fa fa-file-excel-o"></i>
+        </button>
+
+        <button class="btn btn-default ember-view popovercontainer" title="Print" id="printBtn" ng-click="print()" type="button">
+            <i class="fa fa-print"></i>
+        </button>
+        <button class="btn btn-default  ember-view popovercontainer" data-original-title="Refresh" title="Refresh" ng-click="refresh()">
+            <i class="fa fa-refresh"></i>
+        </button>
+
+
+    </div>
+    <div class="input-group pull-right col-md-3" style="padding-right: 25px;">
+        <select class="form-control " ng-model="search.orderbyCol">
+            <option value="0">Movie Id</option>
+            <option value="1">Title</option>
+            <option value="2">Genre</option>
+            <option value="3">Classification</option>
+            <option value="4">Release Date</option>
+            <option value="5">Rating</option>
+        </select>
+        <span class="input-group-btn">
+
+            <button class="btn btn-default ember-view popovercontainer" data-original-title="Sort" title="Sort" ng-click="sort()">
+                <i class="fa {{search.sortIcon}}"></i>
+            </button>
+        </span>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+
+    $("body").off("click", "#printBtn");
+
+
+
+    $('body').on('click', '#printBtn', function () {
+
+        var win = window.open('', '', 'left=0,top=0,width=1100,height=600,toolbar=0,scrollbars=0,status =0');
+        var content = "<html>";
+        content += "<body onload=\"window.print(); window.close();\">";
+        //content += "<body >";
+        content += '<head>';
+        content += '<link href="/app/css/test/bootstrap.css" rel="stylesheet" type="text/css" />';
+        content += '<link href="/app/css/styles.css" rel="stylesheet" type="text/css" />';
+        content += '</head>';
+
+        var data = $('#printBtn').closest('.panel').clone();
+
+        data.find('.table th:last-child, .table td:last-child').remove();
+        data.find('#tbHeader').remove();
+        data.find('#pagingDiv').remove();
+        data.find('hr').remove();
+
+        content += data.html();
+
+        content += "</body>";
+        content += "</html>";
+        win.document.write(content);
+
+
+
+
+        win.document.close();
+
+    });
+</script>

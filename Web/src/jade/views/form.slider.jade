@@ -1,0 +1,31 @@
+.app-view-header Range Slider
+  small Slider directive for AngularJS.
+
+.container-fluid(ng-controller='SliderController')
+  p.clearfix
+    span.pull-left Single
+    span.pull-right Curent Value {{value}}
+  slider(ng-model='value', floor='1', ceiling='100')   
+  p 
+  p.clearfix
+    span.pull-left Single with formatting
+    span.pull-right Curent Value {{formatted}}
+  slider(ng-model='formatted', translate-fn='priceFormat', floor='1', ceiling='100')
+  p.clearfix
+    span.pull-left Range
+    span.pull-right Min:{{range.min}} - Max:{{range.max}}
+  slider(ng-model='range.min', ng-model-range='range.max', floor='1', ceiling='100')   
+  
+  h4.page-header Variants
+  
+  slider.slider-primary(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-success(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-info(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-warning(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-danger(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-inverse(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-amber(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-pink(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-purple(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-orange(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')
+  slider.slider-white(ng-model='range2.min', ng-model-range='range2.max', floor='1', ceiling='100')

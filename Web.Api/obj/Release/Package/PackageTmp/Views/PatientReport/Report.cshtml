@@ -1,0 +1,300 @@
+﻿@{
+    Layout = "";
+}
+<html>
+<head>
+    <link href="~/Scripts/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    @*<link href="~/Scripts/custom/e-report.css" rel="stylesheet" />*@
+
+    <style>
+        .qrPreviewVideo {
+            width: 85%;
+        }
+
+    </style>
+</head>
+<body class="container-fluid">
+    
+    <div class="row" id="scanContainer">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well bg-gray-lighter">
+                <div class="panel panel-default" style="margin-bottom: 0;">
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 pull-left">
+                                <img src="/Images/logo.jpg" class="pull-left" style="width:50px; width:50px;" />
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-10 col-xs-10">
+                                <div class="text-center">
+                                    <h1 style="font-weight:700; font-size:50px;">PPHI LAB</h1>
+                                    <label style="font-weight:600; font-size:40px;">
+                                        Diagnostic Laboratory
+                                    </label><hr />
+                                    <label style="font-weight:600; font-size:30px;">
+                                        Scan qr to view report
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="text-center" id="scanner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="reportContainer" style="display:none;">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well bg-gray-lighter">
+                <div class="panel panel-default">
+                    <div class="panel-body" id="reportContent">
+
+                    </div>
+                    <div class="panel-footer text-right">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-info btn-block rounded btn-lg" style="font-size:35px;" id="closeReport">
+                                    Close
+                                </button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-success btn-block rounded btn-lg" style="font-size:35px;" id="downloadReport">
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- jquery tmpl's -->
+    <script id="reportTmpl" type="text/x-jquery-tmpl">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 pull-left text-sm">
+                <img src="/Images/logo.jpg" class="pull-left" style="width:50px; width:50px;" />
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="text-center">
+                    <h1 style="font-weight:700; font-size:50px;">PPHI SINDH</h1>
+                    <small style="font-weight:600; font-size:30px;" class="text-center">
+                        Diagnostic Laboratory ${testResult.subCompanyName}
+                    </small>
+                    <br />
+                    <label style="font-weight:600; font-size:28px;">
+                        Lab Report
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="pull-right">
+                    <div ng-if="qrCodeValue.length>0">
+                        <qr text="qrCodeValue" type-number="0" correction-level="M" size="'80'" input-mode="'8bit'" image="'image'"></qr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row" style="font-size:25px">
+            <div class="col-lg-6 col-md-6 col-sm-6 pull-left text-sm">
+                Name: <b id="patientName">${testResult.patientName}</b>
+                <br />
+                Gender: <b id="gender"> ${testResult.gender} / ${testResult.age} ${testResult.ageType}</b>
+                <br />
+                ${testResult.relationship  } Name  : <b> ${testResult.fatherName}</b>
+                <br />
+                Lab No: <b id="labNo">${testResultToPrint[0].labNo}</b><br />
+                @*<span id="department">Department: <b id="departmentName"> ${selectedSection.sectionName}</b></span>*@
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 text-right pull-right text-sm">
+                Care of: <b id="careOf">   ${testResult.careOf}</b>
+                <br />
+                Referred By: <b id="refBy">   ${testResult.refBy}</b>
+                <br />
+                Sample Date: <b id="sampleDate">   ${testResult.sampleDate}</b>
+            </div>
+        </div>
+        <br />
+        <div class="row" ng-repeat="result in testResultToPrint">
+            
+            {{each(i, result) testResultToPrint}}
+            <div class="col-sm-12">
+
+                <h5>${result.testName}</h5>
+                <div class="ml-lg">
+                    {{each(proIndex, product) result.products}}
+
+                    {{if product.details.length>0}}
+                    <div class="clearfix"></div>
+
+
+                    <h3 class="text-info" ng-if="result.isGroup && product.details.length>0">[${product.childTestName}]</h3>
+                    
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-report" style="width:95%; margin-left:20px;margin-right:20px; font-size:25px">
+                            {{if proIndex==0}}
+                            <thead>
+                                <tr>
+                                    <th>Test Name</th>
+                                    <th>Test Result</th>
+                                    {{if result.showRangeColumn==true}}
+                                    <th>Reading Unit</th>
+                                    <th>Normal Range</th>
+                                    {{/if}}
+                                </tr>
+                            </thead>
+                            {{/if}}
+                            <tbody>
+                                {{each(i, detail) product.details}}
+                                <tr ng-repeat="detail in product.details | orderBy :'priority'">
+
+                                    {{if detail.resultType=='range'}}
+                                    <td style="width:40%;">${detail.parameterName}</td>
+                                    <td style="width:20%;">${detail.lis}</td>
+                                    <td style="width:20%;">${detail.readingUnit}</td>
+                                    <td style="width:40%;">${detail.normalRange}</td>
+                                    {{/if}}
+
+                                    {{if detail.resultType!='range'}}
+                                    <td style="width:40%;">${detail.name}</td>
+                                    <td style="width:60%;">${detail.selectedValue.propertyValue} ${detail.reading}</td>
+
+                                    {{if product.showRangeColumn==true}}
+                                    <td></td>
+                                    <td></td>
+                                    {{/if}}
+
+                                    {{/if}}
+
+                                </tr>
+                                {{/each}}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{/if}}
+
+                    {{/each}}
+                </div>
+            </div>
+            
+            {{if result.interpretation!=null && result.interpretation.length>0}}
+            <div class="row" style="font-size:30px">
+                <div class="col-sm-12">
+                    <div class="mt-lg">
+                        <label class="col-sm-12 control-label text-sm">Interpretation</label>
+                        <div class="col-sm-12">
+                            <p class="ml-lg">{{html result.interpretation }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+
+            <div class="row" style="font-size:30px">
+                <div class="col-sm-12">
+                    <div class="form-group mt-lg">
+                        <label class="col-sm-12 control-label text-sm">Remarks</label>
+                        <div class="col-sm-12">
+                            <p ng-bind-html="result.remarks"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="row pad-top-botm">
+
+        </div>
+        <br />
+    </script>
+
+
+    <script src="~/Scripts/jquery/dist/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-tmpl/jquery.tmpl.min.js"></script>
+    <script src="~/Scripts/qr-scanner/js/jsqrscanner.nocache.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/custom/e-report.js"></script>
+    <script type="text/javascript">
+        var jbScanner = null;
+        function onQRCodeScanned(scannedText) {
+            if (scannedText.indexOf("inv:") != -1) {
+                var id = scannedText.replace("inv:", "");
+            }
+            getReport(id);
+            //localStorage.setItem('scanValue', scannedText);
+            //jbScanner.stopScanning();
+            //angular.element(document.getElementById('controllerElement')).scope().codeScanned();
+            //window.setTimeout('codeScanned()', 500);
+        }
+
+        //function resumeScanner() {
+        //    setTimeout(function () {
+        //        jbScanner = new JsQRScanner(onQRCodeScanned);
+        //        if (document.getElementById("scanner")) {
+        //            document.getElementById("scanner").innerHTML = ''
+        //        }
+        //        var scannerParentElement = document.getElementById("scanner");
+        //        if (scannerParentElement) {
+        //            //append the jbScanner to an existing DOM element
+        //            jbScanner.appendTo(scannerParentElement);
+        //        }
+        //    }, 500);
+        //}
+
+        //this function will be called when JsQRScanner is ready to use
+        function JsQRScannerReady() {
+            //create a new scanner passing to it a callback function that will be invoked when
+            //the scanner succesfully scan a QR code
+            jbScanner = new JsQRScanner(onQRCodeScanned);
+            //reduce the size of analyzed image to increase performance on mobile devices
+            jbScanner.setSnapImageMaxSize(300);
+            if (document.getElementById("scanner")) {
+                document.getElementById("scanner").innerHTML = ''
+            }
+            var scannerParentElement = document.getElementById("scanner");
+            if (scannerParentElement) {
+                //append the jbScanner to an existing DOM element
+                jbScanner.appendTo(scannerParentElement);
+            }
+        }
+
+        init('@Html.Raw(ViewBag.id)');
+
+        $('#printBtn').click(function () {
+
+
+            var win = window.open('', '', 'left=0,top=0,width=1100,height=600,toolbar=0,scrollbars=0,status =0');
+            var content = "<html>";
+            content += "<body onload=\"window.print(); window.close();\">";
+            //content += "<body >";
+            content += '<head>';
+            content += '<link href="/app/css/test/bootstrap.css" rel="stylesheet" type="text/css" />';
+            content += '<link href="/app/css/styles.css" rel="stylesheet" type="text/css" />';
+            content += '</head>';
+
+
+            content += document.getElementById("rptView").innerHTML;
+            content += "</body>";
+            content += "</html>";
+            win.document.write(content);
+            win.document.close();
+        });
+    </script>
+
+</body>
+</html>

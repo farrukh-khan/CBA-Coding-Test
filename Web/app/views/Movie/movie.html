@@ -1,0 +1,138 @@
+<!-- START row-->
+<div ng-controller="movieController">
+
+    <div class="app-view-header">
+        Movie
+        <div ng-include="'/app/views/Shared/_BackButton.html'" class="pull-right"></div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <form name="movieForm" ng-submit="movieSubmit(movieForm.$valid)">
+                <!-- START panel-->
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+
+
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-sm text-danger">Title</label>
+                                <div class="col-sm-11">
+                                    <input type="text" ng-model="model.title" class="form-control  form-control-rounded input-sm" required />
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-sm text-danger">Genre</label>
+                                <div class="col-sm-11">
+                                    <input type="text" ng-model="model.genre" class="form-control  form-control-rounded input-sm" required />
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-sm text-danger">Classification</label>
+                                <div class="col-sm-11">
+                                    <input type="text" ng-model="model.classification" class="form-control  form-control-rounded input-sm" required />
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-sm text-danger">Release Year</label>
+                                <div class="col-sm-11">
+                                    <input type="text" ng-model="model.releaseDate" class="form-control  form-control-rounded input-sm" required />
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-sm text-danger">Rating</label>
+                                <div class="col-sm-11">
+                                    <input type="text" ng-model="model.rating" class="form-control  form-control-rounded input-sm" required />
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-sm text-muted">Cast</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-model="model.castInput" class="form-control  form-control-rounded input-sm"  />
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success" type="button" ng-click="addCast()">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-sm text-muted"></label>
+                                <div class="col-sm-5">
+
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-right">#</th>
+                                                <th>Cast Name</th>
+                                                <th class="text-center">Delete?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr ng-repeat="d in model.cast track by $index">
+                                                <td class="text-right">{{$index+1}}</td>
+                                                <td>{{d}}</td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-danger" ng-click="removeCast(d)" type="button">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+
+
+
+                    </div>
+
+
+                    <div class="panel-footer text-center">
+                        <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+                        <button type="submit" class="btn btn-danger" ladda="sb_loading" data-style="expand-right" ng-disabled="movieForm.$invalid">Submit</button>
+                    </div>
+
+                </div>
+                <!-- END panel-->
+                <!-- END row-->
+            </form>
+
+        </div>
+    </div>
+
+
+</div>

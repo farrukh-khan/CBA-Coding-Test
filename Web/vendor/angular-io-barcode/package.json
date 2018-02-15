@@ -1,0 +1,46 @@
+{
+  "name": "angular-io-barcode",
+  "version": "1.0.5",
+  "description": "Angular module for io-barcode",
+  "author": "Loic Mahieu <mahieuloic@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "angularjs",
+    "io-barcode",
+    "barcode"
+  ],
+  "main": "lib/angular-io-barcode.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/loicmahieu/angular-io-barcode.git"
+  },
+  "homepage": "https://github.com/loicmahieu/angular-io-barcode",
+  "bugs": "https://github.com/loicmahieu/angular-io-barcode/issues",
+  "devDependencies": {
+    "angular-mocks": "^1.6.4",
+    "chai": "^4.0.1",
+    "eslint": "^4.3.0",
+    "jasmine": "^2.6.0",
+    "jasmine-core": "^2.6.0",
+    "karma": "^1.6.0",
+    "karma-chai": "^0.1.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-spec-reporter": "0.0.31",
+    "karma-webpack": "^2.0.3",
+    "phantomjs": "^2.1.7",
+    "serve": "^6.0.3",
+    "standard": "^10.0.2",
+    "webpack": "^3.3.0"
+  },
+  "scripts": {
+    "test": "npm run lint && karma start karma.conf.js",
+    "demo": "npm run build-browser && echo 'Visit http://localhost:3000/demo' && serve",
+    "build-browser": "rm -rf build && webpack lib/angular-io-barcode.js build/angular-io-barcode.js && NODE_ENV=production webpack lib/angular-io-barcode.js build/angular-io-barcode.min.js && echo \"gzipped, the global build is `gzip -c build/angular-io-barcode.min.js | wc -c` bytes\"",
+    "lint": "standard lib/* test/* *.js"
+  },
+  "dependencies": {
+    "angular": "^1.6.4",
+    "io-barcode": "^1.3.0"
+  }
+}

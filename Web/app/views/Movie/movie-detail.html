@@ -1,0 +1,111 @@
+<!-- START row-->
+<div ng-controller="movieController">
+    <div class="app-view-header">
+        Movie
+        <div ng-include="'/app/views/Shared/_BackButton.html'" class="pull-right"></div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-sm text-muted">Title</label>
+                            <div class="col-sm-11">
+                                <label class="form-control form-control-rounded input-sm">{{model.title}}</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-sm text-muted">Genre</label>
+                            <div class="col-sm-11">
+                                <label class="form-control form-control-rounded input-sm">{{model.genre}}</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-sm text-muted">Classification</label>
+                            <div class="col-sm-11">
+                                <label class="form-control form-control-rounded input-sm">{{model.classification}}</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-sm text-muted">Release Year</label>
+                            <div class="col-sm-11">
+                                <label class="form-control form-control-rounded input-sm">{{model.releaseDate}}</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-sm text-muted">Rating</label>
+                            <div class="col-sm-11">
+                                <label class="form-control form-control-rounded input-sm">{{model.rating}}</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-sm text-muted">Cast</label>
+                            <div class="col-sm-5">
+
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-right">#</th>
+                                            <th>Cast Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr ng-repeat="d in model.cast track by $index">
+                                            <td class="text-right">{{$index+1}}</td>
+                                            <td>{{d}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+
+
+
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+</div>

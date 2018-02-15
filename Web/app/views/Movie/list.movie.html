@@ -1,0 +1,58 @@
+<div ng-controller="movieController">
+
+    <div ng-include="'/app/views/Shared/_Search.html'"></div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div ng-include="'/app/views/Shared/_TblHeader.html'"></div>
+
+            <div class="panel-title">
+                Movies
+            </div>
+        </div>
+        <hr />
+
+        <div class="table-responsive">
+            <div id="tbl">
+                <table class='table table-bordered table-hover bg-white dataTable row-border '>
+                    <thead>
+                        <tr style="font-weight: bold">
+                            <th class="text-right">MOVIE ID</th>
+                            <th>TITLE</th>
+                            <th>GENRE</th>
+                            <th>CLASSIFICATION</th>
+                            <th>RELEASE YEAR</th>
+                            <th class="text-right">RATING</th>
+                            <th>CAST</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat='data in movieList'>
+
+                            <td class="text-right">{{data.movieId}}</td>
+                            <td>{{data.title}}</td>
+                            <td>{{data.genre}}</td>
+                            <td>{{data.classification}}</td>
+                            <td>{{data.releaseDate}}</td>
+                            <td class="text-right">{{data.rating}}</td>
+
+                            <td>
+                                <p ng-repeat="c in data.cast track by $index">{{c}}</p>
+                            </td>
+
+
+                            <td style="white-space: nowrap "><div ng-include="'/app/views/Shared/_GridButtons.html'"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div ng-include="'/app/views/Shared/_GridFooter.html'"></div>
+        </div>
+    </div>
+</div>
+
+
+
+

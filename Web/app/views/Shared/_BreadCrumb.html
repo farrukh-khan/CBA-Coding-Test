@@ -1,0 +1,13 @@
+﻿<style>
+    .breadcrumb {
+        padding: 5px 15px;
+        /* margin-bottom: 19px; */
+        list-style: none;
+        background-color: #fafafa;
+        border-radius: 3px;
+    }
+</style>
+<ol class="breadcrumb" ng-if="breadcrumb">
+    <li ng-repeat="item in breadcrumb" ng-class="{ 'selected': !item.url}"><a ng-if="item.url" href="{{item.url}}"><i class="fa {{item.icon}}"></i> {{item.text}}</a> <span ng-if="!item.url">{{item.text}}</span></li>
+    <!--<li class="active">Dashboard</li>-->
+</ol>

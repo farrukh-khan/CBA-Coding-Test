@@ -1,0 +1,9 @@
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\bin\Web.dll.config
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\bin\Web.dll
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\bin\Web.pdb
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\obj\Debug\Web.csproj.CoreCompileInputs.cache
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\obj\Debug\Web.dll
+F:\Interview Test\commonwealth\Test_Project\Web.API\Web\obj\Debug\Web.pdb

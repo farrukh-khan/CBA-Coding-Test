@@ -1,0 +1,27 @@
+// START row
+.calendar-app(ng-controller="CalendarController")
+  .panel.panel-default
+    .panel-body.bg-primary.panel-card.card-md
+      ul.list-table.fh.text-center
+        li.v-middle
+          p.lead.m0 {{today | date:'EEEE'}}
+          .text-hg.m0 {{today | date:'dd'}}
+          p.m0 {{today | date:'MMMM'}}, {{today | date:'yyyy'}}
+    .panel-body
+      .calendar(ng-model='eventSources', calendar='myCalendar', ui-calendar='uiConfig.calendar')
+    .panel-footer
+      .clearfix
+        .pull-right
+          button.btn.btn-default.btn-sm(ng-click='changeLang()') {{changeTo}}
+        .pull-left
+          .btn-switch.mb(class="btn-switch-info")
+            input(type='checkbox', id='input-btn-switch-info', ng-click="toggleEventSource(0)", checked="isVisible(0)")
+            label.btn.btn-info(for='input-btn-switch-info')
+              em.fa.fa-check
+              strong Personal Calendar
+          .btn-switch.mb(class="btn-switch-purple")
+            input(type='checkbox', id='input-btn-switch-purple', ng-click="toggleEventSource(2)", checked="isVisible(2)")
+            label.btn.btn-purple(for='input-btn-switch-purple')
+              em.fa.fa-check
+              strong External Events (Json)
+  p.text-muted: small *Click on the calendar to add events
